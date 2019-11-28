@@ -1,0 +1,10 @@
+contrasts = {'face','facefamplacefam', 'facenonfamplacenonfam', 'faceplace', ...
+    'fam', 'famface', 'famfacenonfamface', 'famnonfam', 'famplace', 'famplacenonfamplace', ...
+    'img', 'nonfam', 'nonfamface', 'nonfamfacefamface', 'nonfamfam', 'nonfamplace', ...
+    'nonfamplacefamplace', 'place', 'placeface', 'placefamfacefam', 'placenonfamfacenonfam'};
+
+for i = 1:length(contrasts)
+    ds = cosmo_fmri_dataset(sprintf('C:\\Users\\flavio.ragni\\Documents\\Resting_state_project\\N=23\\group_3rd_%s_0.001_clustercorr.gfeat\\cope1.feat\\thresh_zstat1.nii.gz', char(contrasts{i})));
+    cosmo_map2fmri(ds, sprintf('group_3rd_%s_0.001_clustercorr.vmp', char(contrasts{i})));
+    ds=[];
+end
