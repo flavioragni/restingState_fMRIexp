@@ -72,7 +72,7 @@ for iCond=1:length(condition)
     ds_all_bad=cosmo_stack(ds_intersect_cell_bad,1);
     
     % SAVE MAP
-    %cosmo_map2fmri(ds_all,[fullfile(output_path,sprintf('group_searchlight_%s_N=%d_corrected.mat', condition, length(subList)))]); % questa mappa è la media dei dati di group_ds (17 celle) per ciascun voxel across subjects. Output = 1 cella x nr voxels
+    %cosmo_map2fmri(ds_all,[fullfile(output_path,sprintf('group_searchlight_%s_N=%d_corrected.mat', condition, length(subList)))]); % questa mappa Ã¨ la media dei dati di group_ds (17 celle) per ciascun voxel across subjects. Output = 1 cella x nr voxels
     cosmo_map2fmri(ds_all_good,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_good_corrected.vmp', char(condition{iCond}), length(goodImg)))]);
     cosmo_map2fmri(ds_all_good,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_good_corrected.nii.gz', char(condition{iCond}), length(goodImg)))]);
     cosmo_map2fmri(ds_all_bad,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_bad_corrected.vmp', char(condition{iCond}), length(badImg)))]);
@@ -99,15 +99,14 @@ for iCond=1:length(condition)
         end
         
         % SAVE ONE SAMPLE T TEST FIGURE IN MNI SPACE!!!!!!
-        cosmo_map2fmri(stat_ds_thresh,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_groupVividComp_corrected_one_sample_t_%s.vmp', char(condition{iCond}), (length(goodImg)+length(badImg)), num2str(p_thresh(f))))]); % questa mappa è il t-test sui dati non corretti di group-ds
+        cosmo_map2fmri(stat_ds_thresh,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_groupVividComp_corrected_one_sample_t_%s.vmp', char(condition{iCond}), (length(goodImg)+length(badImg)), num2str(p_thresh(f))))]); % questa mappa Ã¨ il t-test sui dati non corretti di group-ds
         cosmo_map2fmri(stat_ds_thresh,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_groupVividComp_corrected_one_sample_t_%s.nii', char(condition{iCond}), (length(goodImg)+length(badImg)), num2str(p_thresh(f))))]);
         cosmo_map2fmri(stat_ds_thresh,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_groupVividComp_corrected_one_sample_t_%s.nii.gz', char(condition{iCond}), (length(goodImg)+length(badImg)), num2str(p_thresh(f))))]);
         
         %Clear thresholded dataset
         stat_ds_thresh = [];
     end
-    %% Per correggere FDR chiama funzione FDR_bh e dai come input il p del t-test
-    %a group level (stat_ds_p.samples)
+    %% Apply FDR correction
     [result_fdr, result_crit_p, adj_ci_cvrg, adj_p]=fdr_bh(stat_ds_p.samples,0.05,'pdep','yes');
     %In result_fdr you have a binary mask with voxels that survives FDR
     %correction. Now select in stat_ds only the voxels that survived with their
@@ -118,20 +117,7 @@ for iCond=1:length(condition)
             stat_ds_fdr.samples(k)=0;
         end
     end
-    %Salva stat_ds_fdr come nifti file. E' la tua mappa corretta FDR per la
-    %searchlight
+    %Salva output in nii.gz and vmp
     cosmo_map2fmri(stat_ds_fdr,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_groupVividComp_FDR_corrected.nii.gz', char(condition{iCond}), (length(goodImg)+length(badImg))))]);
     cosmo_map2fmri(stat_ds_fdr,[fullfile(output_path,sprintf('group_searchlight_LDA_%s_N=%d_groupVividComp_FDR_corrected.vmp', char(condition{iCond}), (length(goodImg)+length(badImg))))]);
-    
-    %%% giro questo (statistica non parametrica) sul CLUSTER perchè ci mette un sacco.
-    % % COMPUTE COSMO STATS FOR FMRI
-    % nbrhood=cosmo_cluster_neighborhood(group_ds,'progress',false);
-    % ds_z=cosmo_montecarlo_cluster_stat(group_ds,nbrhood,'niter',10000,  'h0_mean', 0.5,'progress',10 );
-    % %ds_z=cosmo_montecarlo_cluster_stat(group_ds,nbrhood,'niter',10,  'h0_mean', 0.5, 'progress',10 );
-    %
-    % % SAVE ACCURACY FILE
-    % save([comp_folder filesep 'ds_z'],'ds_z');
-    % % SAVE MAP
-    % cosmo_map2fmri(ds_z,[comp_folder filesep filename '_cosmo.vmp']);
-    % cosmo_map2fmri(ds_z,[comp_folder filesep filename '_cosmo.nii']);
 end
