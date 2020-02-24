@@ -106,7 +106,7 @@ titles={'V1', 'FFA', 'PPA', 'IFG', 'mPFC', 'mPrecun', 'TPJ', 'SPL', 'aIPS'};
 figure
 for i=1:length(index)
     subplot(fix(length(index)/3), 3, i)
-    bar([group_average_all(1,index(i)), group_average_all(2,index(i)), group_average_all(1,index(i)+1), group_average_all(2,index(i)+1)]);
+    bar(group_average_all(1:2,index(i):index(i)+1)');
     hold on
     plot(xlim,[1/4 1/4], 'r');
     hold on;
@@ -114,7 +114,7 @@ for i=1:length(index)
        std(group_placeIdentity.accuracyGroup(:,ROIs_index(i)))/sqrt(length(subList)); ...
        std(group_faceIdentity.accuracyGroup(:,ROIs_index(i+1)))/sqrt(length(subList)), ...
        std(group_placeIdentity.accuracyGroup(:,ROIs_index(i+1)))/sqrt(length(subList))];
-    er=errorbar([0.85,1.14;1.85,2.14],group_average_all(1:2,index(i):index(i)+1), ...
+    er=errorbar([0.85,1.14;1.85,2.14],group_average_all(1:2,index(i):index(i)+1)', ...
         sem, sem, 'Color', [0 0 0], 'LineStyle', 'none');
     title(titles{i});
     ylim([0 0.6]);
