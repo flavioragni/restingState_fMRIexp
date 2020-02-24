@@ -106,7 +106,7 @@ titles={'V1', 'FFA', 'PPA', 'IFG', 'mPFC', 'mPrecun', 'TPJ', 'SPL', 'aIPS'};
 figure
 for i=1:length(index)
     subplot(fix(length(index)/3), 3, i)
-    bar(group_average_all(1:2,index(i):index(i)+1));
+    bar([group_average_all(1,index(i)), group_average_all(2,index(i)), group_average_all(1,index(i)+1), group_average_all(2,index(i)+1)]);
     hold on
     plot(xlim,[1/4 1/4], 'r');
     hold on;
@@ -196,7 +196,7 @@ legend('Face Identity', 'Place Identity', 'Chance Level');
 figure
 for i=1:length(index)
     subplot(fix(length(index)/3), 3, i)
-    bar(group_average_all(3:end,index(i):index(i)+1)');
+    bar([group_average_all(3,index(i)), group_average_all(4,index(i)), group_average_all(5,index(i)), group_average_all(3,index(i)+1), group_average_all(4,index(i)+1), group_average_all(5,index(i)+1)]);
     hold on
     plot(xlim,[1/2 1/2], 'r');
     hold on;
