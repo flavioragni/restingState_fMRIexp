@@ -384,26 +384,14 @@ else
 end
 %Function GTD_makeds_mvpa retun ds for currentSub already cleaned and
 %masked
-%% SVM classifier searchlight analysis
+%% LDA classifier searchlight analysis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This analysis identified brain regions where the categories can be
-% distinguished using an odd-even partitioning scheme and a Naive Bayes
-% classifier.
-% set parameters for naive bayes searchlight (partitions) in a
-% measure_args struct.
-%% SVM classifier searchlight analysis
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This analysis identified brain regions where the categories can be
-% distinguished using an odd-even partitioning scheme and a Naive Bayes
-% classifier.
-% set parameters for naive bayes searchlight (partitions) in a
-% measure_args struct.
 args=struct();
-%args.classifier = @cosmo_classify_lda;
+args.classifier = @cosmo_classify_lda;
 % if cosmo_check_external('libsvm',false)
 %     args.classifier=@cosmo_classify_libsvm;
 % end
-args.classifier=@cosmo_classify_libsvm;
+%args.classifier=@cosmo_classify_libsvm;
 measure=@cosmo_crossvalidation_measure;
 args.partitions=cosmo_nfold_partitioner(ds);
 args.partitions=cosmo_balance_partitions(args.partitions,ds);
